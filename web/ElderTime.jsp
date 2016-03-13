@@ -25,7 +25,8 @@
             ArrayList<ArrayList<String>> printList = new ArrayList<ArrayList<String>>();
             ArrayList<ArrayList<String>> activeList = ElderController.processActive();
             ArrayList<ArrayList<String>> inactiveList = ElderController.processInactive();
-            printList = activeList;
+            ArrayList<ArrayList<String>> sleepList = ElderController.processSleeping();
+            printList = sleepList;
             //ArrayList<String> activeList = new ArrayList<String>();
             //<a href="https://raw.githubusercontent.com/wagatsubasa/cloudassign_02/master/daasactivitylevels20150918195538.csv">aaa</a>
         %>
@@ -34,23 +35,41 @@
     <body>
 
         <%
-            for (int i = 0; i < printList.size(); i++) {
-                ArrayList<String> tempList = printList.get(i);
-                %>
-                <div><h2>Time recorded</h2><%=tempList.get(tempList.size()-1)%></div>
-                <div><h4>Active timings</h1> <%
-                for (int j = 0; j < tempList.size()-1; j++) {
-                    
+            for (int i = 0; i < activeList.size(); i++) {
+                ArrayList<String> tempList = activeList.get(i);
         %>
-        <%=tempList.get(j)%>
+        <div><h2>Time recorded</h2><%=tempList.get(tempList.size() - 1)%></div>
+        <div><h4>Active timings</h1> <%
+            for (int j = 0; j < tempList.size() - 1; j++) {
+
+                %>
+                <%=tempList.get(j)%>
+
+                <%
+                    }
+                %> 
+        </div>
 
         <%
-                }
-                %> 
-                </div>
-                
-                <%
             }
         %>
+
+        <%
+            for (ArrayList<String> arS : sleepList) {
+        %>
+        <div>
+            <%
+                for (String s : arS) {
+            %>
+            <%=s%>
+            <%
+
+                }
+            %>
+        </div>
+        <%
+            }
+        %>
+
     </body>
 </html>

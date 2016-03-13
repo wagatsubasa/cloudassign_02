@@ -66,6 +66,31 @@ public class ElderController {
 
         return testList;
     }
+    
+    public static ArrayList<ArrayList<String>> processSleeping() {
+        String active_lvl = "X:/daassleepingtiming20150918192704.csv";
+
+        ArrayList<String> activeList = readFile(active_lvl);
+        ArrayList<ArrayList<String>> testList = new ArrayList<>();
+        for (String s : activeList) {
+
+//            String s_cut = s.substring(s.indexOf("\"") + 1);
+//            s_cut = s.substring(0, s.indexOf("\""));
+//            testList.add(s_cut);
+            String[] sArr = s.split(",");
+            //int count = 0;
+            ArrayList<String> tempList = new ArrayList<>();
+            for (String sA : sArr) {
+                if (!sA.equals("Asia/Singapore") && !sA.equals("null") ) {
+                    tempList.add(sA);
+                }
+                //count++;
+            }
+            testList.add(tempList);
+        }
+
+        return testList;
+    }
 
     public static ArrayList<String> readFile(String url) {
         ArrayList<String> resultList = new ArrayList<>();
