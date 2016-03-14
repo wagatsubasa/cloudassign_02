@@ -4,10 +4,13 @@
     Author     : TC
 --%>
 
+<%@page import="java.util.Calendar"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Controller.ElderController"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.HashMap"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -49,74 +52,91 @@
                 inactiveMap.put(key, arr);
 
             }
-            
-            
+
+            String targetDate = "2015-01-16T16:00:00.000Z";
+            String formatDate = targetDate.replaceAll("T", "/").replaceAll("Z", "");
+            //activityDateList.get(activityDateList.size()-1);
+
+            ArrayList<String> trgActiveList = activeMap.get(targetDate);
+            ArrayList<String> trgInactiveList = inactiveMap.get(targetDate);
             //ArrayList<String> activeList = new ArrayList<String>();
             //<a href="https://raw.githubusercontent.com/wagatsubasa/cloudassign_02/master/daasactivitylevels20150918195538.csv">aaa</a>
             //ElderController.mashData();
+            //String s = "03/24/2013 21:54";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm:ss.SSS");
+            Date date = simpleDateFormat.parse(formatDate);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+
+            SimpleDateFormat displayFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            SimpleDateFormat displayFormat2 = new SimpleDateFormat("dd-MM-yyyy");
+            String newTime = displayFormat2.format(cal.getTime());
+
+            String sleep = "2015-02-16T16:50:02.000Z".replaceAll("T", "/").replaceAll("Z", "");
+            String wake = "2015-02-17T01:26:42.000Z".replaceAll("T", "/").replaceAll("Z", "");
+
+            Date sleepDate = simpleDateFormat.parse(sleep);
+            Date wakeDate = simpleDateFormat.parse(wake);
+
+            Calendar calSleep = Calendar.getInstance();
+            Calendar calWake = Calendar.getInstance();
+
+            calSleep.setTime(sleepDate);
+            calWake.setTime(wakeDate);
+
+            int count = 0;
+
+            if (trgActiveList.size() >= trgInactiveList.size()) {
+                count = trgInactiveList.size();
+            } else {
+                count = trgActiveList.size();
+            }
+            Calendar cal1 = Calendar.getInstance();
+            cal1.setTime(date);
+            Calendar cal2 = Calendar.getInstance();
+            cal2.setTime(date);
         %>
 
     </head>
     <body>
-        <h1>ACTIVE TIMES</h1>
-        <%
-            for (int i = 0; i < activeList.size(); i++) {
-                ArrayList<String> tempList = activeList.get(i);
-        %>
-        <div><h2>Time recorded</h2><%=tempList.get(tempList.size() - 1)%></div>
-        <div><h4>Active timings</h1> <%
-            for (int j = 0; j < tempList.size() - 1; j++) {
+        <div><h1>
+                <%=newTime%>
+            </h1></div>
+        <h4>Active timings</h1>
+            <%
+                Calendar AstartTime = cal1;
+                Calendar AendTime = cal2;
+                for (int i = 0; i < count; i++) {
+                    //ArrayList<String> tempList = activeList.get(i);
 
-                %>
-                <%=tempList.get(j)%>
-
-                <%
-                    }
-                %> 
-        </div>
-
-        <%
-            }
-        %>
-
-        <h1>INACTIVE TIME</h1>
-        <%
-            for (int i = 0; i < activeList.size(); i++) {
-                ArrayList<String> tempList = inactiveList.get(i);
-        %>
-        <div><h2>Time recorded</h2><%=tempList.get(tempList.size() - 1)%></div>
-        <div><h4>Inactive timings</h1> <%
-            for (int j = 0; j < tempList.size() - 1; j++) {
-
-                %>
-                <%=tempList.get(j)%>
-
-                <%
-                    }
-                %> 
-        </div>
-
-        <%
-            }
-        %>
-
-        <h1>Sleeping Timings</h1>
-
-        <%
-            for (ArrayList<String> arS : sleepList) {
-        %>
+            %>
         <div>
+            <div> <%            //for (int j = 0; j < tempList.size() - 1; j++) {
+                int x = Integer.parseInt(trgActiveList.get(i));
+                AendTime.add(Calendar.SECOND, x);
+                //String s = AendTime.getTime();
+                %>
+                Active from: <font color="green"><%=displayFormat.format(AstartTime.getTime())%></font> to <font color="green"><%=displayFormat.format(AendTime.getTime())%></font>
+            </div>
             <%
+                AstartTime.setTime(AendTime.getTime());
+                x = Integer.parseInt(trgInactiveList.get(i));
+                AendTime.add(Calendar.SECOND, x);
 
             %>
-            <%=arS.get(0)%>
+            <div>
+                Inactive: <font color="red"><%=displayFormat.format(AstartTime.getTime())%></font> to <font color="red"><%=displayFormat.format(AendTime.getTime())%></font>
+            </div>
+            <br>
             <%
+                    AstartTime.setTime(AendTime.getTime());
+                }
+            %> 
 
-
-            %>
         </div>
-        <%            }
-        %>
 
-    </body>
+
+
+</body>
 </html>

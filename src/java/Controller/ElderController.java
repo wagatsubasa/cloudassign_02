@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,27 +29,25 @@ public class ElderController {
         //0 - sleeping and waking time
         ArrayList<ArrayList<String>> sleepList = processSleeping();
         ArrayList<ArrayList<String>> wakeList = processWakeup();
-        
+
         ArrayList<String> activityDateList = new ArrayList<>();
-        
+
         HashMap<String, ArrayList<String>> activeMap = new HashMap<>();
         for (ArrayList<String> arr : activeList) {
-            String key = arr.get(arr.size()-1);
+            String key = arr.get(arr.size() - 1);
             activityDateList.add(key);
-            arr.remove(arr.size()-1);
+            arr.remove(arr.size() - 1);
             activeMap.put(key, arr);
-            
+
         }
 
         HashMap<String, ArrayList<String>> inactiveMap = new HashMap<>();
         for (ArrayList<String> arr : inactiveList) {
-            String key = arr.get(arr.size()-1);
-            arr.remove(arr.size()-1);
+            String key = arr.get(arr.size() - 1);
+            arr.remove(arr.size() - 1);
             inactiveMap.put(key, arr);
-            
+
         }
-        
-        
 
     }
 
